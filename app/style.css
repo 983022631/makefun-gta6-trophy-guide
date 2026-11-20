@@ -1,7 +1,87 @@
-body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
-header { display: flex; justify-content: space-between; align-items: baseline; }
-.controls { display: flex; gap: 16px; margin: 12px 0; align-items: center; }
-.import input { font-size: 12px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; white-space: pre-line; }
-th { background: #f2f2f2; }
+/* Leonida Trophy Guide — own look: warm sand paper, deep teal accent, amber grade chips. */
+:root {
+  --paper: #f7f3e8;
+  --card: #fffdf6;
+  --ink: #23282e;
+  --muted: #6b7280;
+  --line: #e2dccb;
+  --accent: #0f766e;
+  --accent-soft: #d9efec;
+  --warn: #b45309;
+  --warn-soft: #fdf0d5;
+  --platinum: #5b7a99;
+  --gold: #b8860b;
+  --silver: #6b7280;
+  --bronze: #9a6b4f;
+}
+* { box-sizing: border-box; }
+body { font-family: Georgia, "Times New Roman", serif; margin: 0; color: var(--ink); background: var(--paper); }
+body, button, input, select { font-size: 15px; }
+h1, h2, h3, .bignum, .tab, button, .grade, .kind, .pill { font-family: "Segoe UI", system-ui, sans-serif; }
+.top { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 20px 28px 12px; border-bottom: 3px solid var(--accent); background: var(--card); }
+.top h1 { margin: 0; font-size: 30px; letter-spacing: .5px; }
+.subtitle { margin: 6px 0 0; color: var(--muted); font-family: "Segoe UI", system-ui, sans-serif; font-size: 13px; }
+.progressblock { min-width: 240px; text-align: right; }
+.bignum { font-size: 34px; font-weight: 700; line-height: 1; }
+.bignum .of { color: var(--muted); font-size: 20px; }
+.bar { height: 10px; background: var(--line); border-radius: 5px; margin: 8px 0 4px; overflow: hidden; }
+.fill { height: 100%; background: var(--accent); }
+.progressline { margin: 0; color: var(--muted); font-family: "Segoe UI", system-ui, sans-serif; font-size: 13px; }
+.tabs { display: flex; gap: 4px; padding: 0 28px; background: var(--card); border-bottom: 1px solid var(--line); }
+.tab { padding: 10px 14px; text-decoration: none; color: var(--ink); border-bottom: 3px solid transparent; font-weight: 600; }
+.tab.active { border-bottom-color: var(--accent); color: var(--accent); }
+.pill { background: var(--warn); color: #fff; border-radius: 10px; padding: 1px 8px; font-size: 12px; }
+main { padding: 16px 28px 28px; max-width: 1280px; margin: 0 auto; }
+.controls { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin: 4px 0 10px; font-family: "Segoe UI", system-ui, sans-serif; }
+.controls label { font-weight: 600; font-size: 13px; }
+.controls input[type="search"], .controls select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+.controls input[type="search"] { width: 230px; }
+button, .import { font-family: "Segoe UI", system-ui, sans-serif; font-weight: 600; background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+.import { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
+.import input { display: none; }
+.spoiler { display: flex; align-items: center; gap: 6px; }
+.hint, .lede { color: var(--muted); font-size: 14px; margin: 4px 0 12px; }
+.lede { max-width: 900px; line-height: 1.5; }
+.split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 18px; align-items: start; }
+.list { list-style: none; margin: 0; padding: 0; }
+.row { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; }
+.row:hover { border-color: var(--accent); }
+.row.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.row.earned { opacity: .72; }
+.row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); flex: none; }
+.row .body { min-width: 0; }
+.row .name { font-weight: 700; font-size: 16px; }
+.row .desc { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.row .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; font-family: "Segoe UI", system-ui, sans-serif; }
+.grade, .kind, .flag, .target { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: .4px; text-transform: uppercase; }
+.grade.platinum { background: #dbe7f3; color: var(--platinum); }
+.grade.gold { background: #f7e8c3; color: var(--gold); }
+.grade.silver { background: #e5e7eb; color: var(--silver); }
+.grade.bronze { background: #f3e2d3; color: var(--bronze); }
+.kind { background: var(--accent-soft); color: var(--accent); }
+.flag { background: var(--warn-soft); color: var(--warn); }
+.target { background: #eef2f7; color: #475569; }
+.hidden-name { color: var(--muted); font-style: italic; }
+.detail { position: sticky; top: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+.detail h2 { margin: 0 0 4px; font-size: 22px; }
+.detail .official { color: var(--muted); font-style: italic; margin: 0 0 10px; }
+.detail h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--accent); margin: 14px 0 4px; }
+.detail p { line-height: 1.55; margin: 0 0 8px; }
+.detail .sources { font-size: 13px; color: var(--muted); }
+.detail .sources li { margin-bottom: 3px; }
+.detail .missable-note { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 8px 10px; border-radius: 0 6px 6px 0; }
+.detail-empty { color: var(--muted); }
+.stage { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; }
+.stage h2 { margin: 0 0 4px; font-size: 20px; }
+.stage .stage-meta { color: var(--muted); font-family: "Segoe UI", system-ui, sans-serif; font-size: 13px; margin: 0 0 10px; }
+.stage .mini { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 24px; }
+.stage .mini li { break-inside: avoid; padding: 3px 0; font-size: 14px; }
+.stage .mini li.done { text-decoration: line-through; color: var(--muted); }
+#view-about h2 { font-size: 22px; }
+#view-about p { line-height: 1.6; max-width: 900px; }
+footer { border-top: 1px solid var(--line); padding: 14px 28px 24px; color: var(--muted); font-size: 13px; }
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .detail { position: static; }
+  .stage .mini { columns: 1; }
+}
